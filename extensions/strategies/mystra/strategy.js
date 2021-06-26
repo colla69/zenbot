@@ -6,7 +6,7 @@ var z = require('zero-fill')
 
 const LONG = 'long'
 const SHORT = 'short'
-const PROFIT_FACTOR = 1.5
+const PROFIT_FACTOR = 1.75
 
 
 module.exports = {
