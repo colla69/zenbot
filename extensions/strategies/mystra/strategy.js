@@ -17,8 +17,8 @@ module.exports = {
     this.option('period', 'period length, same as --period_length', String, '30m')
     this.option('period_length', 'period length, same as --period', String, '30m')
     
-    this.option('bollinger_size', 'period size', Number, 10)
-    this.option('bollinger_time', 'times of standard deviation between the upper band and the moving averages', Number, 3)
+    this.option('bollinger_size', 'period size', Number, 20)
+    this.option('bollinger_time', 'times of standard deviation between the upper band and the moving averages', Number, 2.5)
 
     this.option('rsi_periods', 'number of RSI periods', Number, 14)
   },
@@ -54,10 +54,18 @@ module.exports = {
     if (s.period.bollinger && s.period.rsi && s.period.bollinger.upperBound) { // if one boud exists all of them do
       if (s.direction){ 
         s.signal = null
+        return cb()
        }
 
-      let tradeDirection = rsiBullish(s.period.rsi) ? LONG : SHORT
+      // let tradeDirection = rsiBullish(s.period.rsi) ? LONG : SHORT
       // console.log(tradeDirection)
+      let tradeDirection
+      if (s.period.rsi > 75){
+        tradeDirection = LONG
+      }
+      if (s.period.rsi < 43){
+        tradeDirection = SHORT
+      }
 
       if (tradeDirection === LONG && s.period.high > s.period.bollinger.upperBound){
         // console.log('broken Up')
@@ -132,5 +140,5 @@ function resetLastTrade(s) {
 }
 
 function rsiBullish(rsi) {
-  return rsi > 50
+  return rsi > 60
 }
